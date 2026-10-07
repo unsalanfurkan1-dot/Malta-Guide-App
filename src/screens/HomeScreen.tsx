@@ -1,5 +1,5 @@
 import { useApp } from '@/store';
-import { ArrowRight, Compass, MapPin, Route, Sparkles, Sun } from 'lucide-react';
+import { ArrowRight, CalendarDays, Clock3, Compass, MapPin, Route, Sparkles, Sun } from 'lucide-react';
 
 const moods = [
   { label: 'Beach Day', emoji: '🏖️' },
@@ -7,6 +7,12 @@ const moods = [
   { label: 'Culture', emoji: '🏛️' },
   { label: 'Food', emoji: '🍝' },
   { label: 'Sunset', emoji: '🌅' },
+];
+
+const previewEvents = [
+  { title: 'Live music & events', area: 'Around Malta', time: 'Today', emoji: '🎶' },
+  { title: 'Culture & local happenings', area: 'Malta & Gozo', time: 'Today', emoji: '🎭' },
+  { title: 'Nightlife & evening plans', area: 'Tonight', time: 'Today', emoji: '✨' },
 ];
 
 export default function HomeScreen() {
@@ -32,6 +38,27 @@ export default function HomeScreen() {
       </section>
 
       <main className="mx-auto max-w-md px-5 pt-7">
+        <section className="mb-7">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-rose-500"><span className="h-2 w-2 animate-pulse rounded-full bg-rose-500" /> Happening today</div>
+              <h2 className="mt-1 text-xl font-black text-slate-900">Today in Malta</h2>
+              <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-slate-500"><CalendarDays className="h-3.5 w-3.5" /> Today's events · updated daily</p>
+            </div>
+            <button className="shrink-0 text-sm font-black text-cyan-700">See all →</button>
+          </div>
+          <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
+            {previewEvents.map((event) => (
+              <article key={event.title} className="w-56 shrink-0 rounded-3xl bg-white p-4 shadow-sm ring-1 ring-rose-100">
+                <div className="flex items-center justify-between"><span className="text-2xl">{event.emoji}</span><span className="rounded-full bg-rose-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-rose-600">Today</span></div>
+                <h3 className="mt-4 font-black leading-tight text-slate-900">{event.title}</h3>
+                <p className="mt-2 flex items-center gap-1 text-xs font-semibold text-slate-500"><Clock3 className="h-3.5 w-3.5" /> {event.time} · {event.area}</p>
+              </article>
+            ))}
+          </div>
+          <p className="mt-1 text-[11px] leading-4 text-slate-400">Live event sources will replace these preview categories before launch, so expired events are never presented as current.</p>
+        </section>
+
         <div className="flex items-end justify-between">
           <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-500">Pick your vibe</p><h2 className="mt-1 text-xl font-black text-slate-900">What sounds good today?</h2></div>
         </div>
