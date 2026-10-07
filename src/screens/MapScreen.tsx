@@ -7,6 +7,13 @@ export default function MapScreen() {
   const { stops, selectedStopIdx, openStop, closeStop, completeStop, skipStop, goHome } = useApp();
   const [showNavMsg, setShowNavMsg] = useState(false);
 
+  const navigateToStop = () => {
+    if (!activeStop) return;
+    const { latitude, longitude } = activeStop.place;
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`, '_blank', 'noopener,noreferrer');
+    setShowNavMsg(true);
+  };
+
   const completedCount = stops.filter((s) => s.status === 'completed').length;
   const totalCount = stops.length;
   const activeStopIdx = selectedStopIdx !== null ? selectedStopIdx : null;
@@ -96,13 +103,13 @@ export default function MapScreen() {
 
             {showNavMsg && (
               <div className="mt-3 rounded-xl bg-sky-50 px-4 py-2.5 text-center text-sm font-medium text-sky-700">
-                Navigation integration coming soon.
+                Opening directions in Google Maps…
               </div>
             )}
 
             <div className="mt-4 flex gap-3">
               <button
-                onClick={() => setShowNavMsg(true)}
+                onClick={navigateToStop}
                 className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-sky-600 py-3 font-semibold text-white transition active:scale-[0.97]"
               >
                 <Navigation className="h-5 w-5" />
