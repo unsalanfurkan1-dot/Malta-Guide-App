@@ -1,6 +1,7 @@
 export type PlaceCategory =
   | 'City' | 'Garden' | 'Town' | 'Historic' | 'Cliffs'
-  | 'Fishing Village' | 'Nature' | 'Beach' | 'Attraction' | 'Ferry' | 'Gozo';
+  | 'Fishing Village' | 'Nature' | 'Beach' | 'Attraction' | 'Ferry' | 'Gozo'
+  | 'Church' | 'Fort' | 'Museum' | 'Archaeology' | 'Viewpoint';
 
 export interface MaltaPlace {
   id: string;
