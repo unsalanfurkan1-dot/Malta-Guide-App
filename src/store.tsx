@@ -3,7 +3,7 @@ import type { MaltaPlace, RouteStop } from '@/types';
 import { MALTA_PLACES, DEMO_PLACE_IDS } from '@/data/places';
 import { nearestNeighborOrder } from '@/lib/route';
 
-type Screen = 'home' | 'plan' | 'trip' | 'map';
+type Screen = 'home' | 'plan' | 'trip' | 'essentials' | 'map';
 
 interface AppState {
   screen: Screen;
@@ -14,6 +14,7 @@ interface AppState {
   goPlan: () => void;
   startBuildRoute: () => void;
   goMap: () => void;
+  goEssentials: () => void;
   addPlace: (place: MaltaPlace) => void;
   removePlace: (placeId: string) => void;
   clearSelection: () => void;
@@ -65,6 +66,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     goPlan: () => { setScreen('plan'); },
     startBuildRoute: () => { setScreen('trip'); },
     goMap: () => { setScreen(stops.length ? 'map' : 'trip'); },
+    goEssentials: () => { setScreen('essentials'); },
     addPlace: (place) => {
       setSelectedPlaces((prev) =>
         prev.some((p) => p.id === place.id) ? prev : [...prev, place]
