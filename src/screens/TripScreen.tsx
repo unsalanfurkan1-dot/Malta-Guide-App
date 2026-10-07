@@ -1,7 +1,8 @@
 import { useApp } from '@/store';
 import { MALTA_PLACES } from '@/data/places';
-import { Plus, X, MapPin, ArrowRight } from 'lucide-react';
+import { Plus, X, MapPin, ArrowRight, Search } from 'lucide-react';
 import type { PlaceCategory } from '@/types';
+import { useMemo, useState } from 'react';
 
 const CATEGORY_COLORS: Record<PlaceCategory, string> = {
   City: 'bg-sky-100 text-sky-700',
@@ -19,7 +20,13 @@ const CATEGORY_COLORS: Record<PlaceCategory, string> = {
 
 export default function TripScreen() {
   const { selectedPlaces, addPlace, removePlace, createRoute, goHome } = useApp();
+  const [query, setQuery] = useState('');
   const selectedIds = new Set(selectedPlaces.map((p) => p.id));
+  const filteredPlaces = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return MALTA_PLACES;
+    return MALTA_PLACES.filter((p) => [p.name, p.category, p.area].some((v) => v?.toLowerCase().includes(q)));
+  }, [query]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -41,6 +48,7 @@ export default function TripScreen() {
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
+        <div className="relative mb-4"><Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search Mdina, beach, Gozo..." className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 outline-none focus:border-cyan-500" /></div>
         {selectedPlaces.length > 0 && (
           <div className="mb-4">
             <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
@@ -75,7 +83,7 @@ export default function TripScreen() {
           Malta, Gozo & Comino
         </p>
         <div className="space-y-2">
-          {MALTA_PLACES.map((place) => {
+          {filteredPlaces.map((place) => {
             const isSelected = selectedIds.has(place.id);
             return (
               <button
@@ -92,7 +100,7 @@ export default function TripScreen() {
                 </div>
                 <div className="flex-1">
                   <p className="font-medium text-gray-900">{place.name}</p>
-                  <p className="text-xs text-gray-400">{place.category}</p>
+                  <p className="text-xs text-gray-400">{place.area ? `${place.area} · ` : ''}{place.category}</p>
                 </div>
                 <div className={`flex h-7 w-7 items-center justify-center rounded-full ${isSelected ? 'bg-cyan-600 text-white' : 'bg-gray-100 text-gray-400'}`}>
                   {isSelected ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
